@@ -5,7 +5,7 @@ int main ( int argc, char **argv)
 {
 	if (argc < 4)
 	{
-		std::cout<<"Using: name_programm <input_of_file> <output_file>"<<endl;
+		std::cout<<"Usage: "<<argv[0]<<" <e|d> <input_file> <output_file>"<<endl;
 		return -1;
 	}
 	if (argv[1][0] == 'e')
