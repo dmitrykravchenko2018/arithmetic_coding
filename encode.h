@@ -3,8 +3,8 @@
 
 class Encode : public Compress
 {
-	int low, high;
-	int opposite_bits;
+	long low, high;
+	long opposite_bits;
 	int buffer;
 	int	bits_in_buf;
 

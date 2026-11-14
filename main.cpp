@@ -1,5 +1,6 @@
 #include "encode.h"
 #include "decode.h"
+#include <stdexcept>
 
 int main ( int argc, char **argv)
 {
@@ -8,15 +9,23 @@ int main ( int argc, char **argv)
 		std::cout<<"Usage: "<<argv[0]<<" <e|d> <input_file> <output_file>"<<endl;
 		return -1;
 	}
-	if (argv[1][0] == 'e')
+	try
 	{
-		Encode obj;
-		obj.encode(argv[2], argv[3]);
+		if (argv[1][0] == 'e')
+		{
+			Encode obj;
+			obj.encode(argv[2], argv[3]);
+		}
+		else if (argv[1][0] == 'd')
+		{
+			Decode obj;
+			obj.decode(argv[2], argv[3]);
+		}
 	}
-	else if (argv[1][0] == 'd')
+	catch (const std::runtime_error &error)
 	{
-		Decode obj;
-		obj.decode(argv[2], argv[3]);
+		std::cerr << "Error: " << error.what() << endl;
+		return 1;
 	}
 	return 0;
 }

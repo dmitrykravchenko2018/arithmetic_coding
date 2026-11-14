@@ -29,7 +29,7 @@ void Encode::encode(char *infile, char *outfile)
 		int ch;
 		int symbol;
 		ch = in.get();
-		if (in.eof())
+		if (ch == EOF)
 		{
 			cout<<"Encoding is done"<<endl;
 			break;
@@ -46,10 +46,10 @@ void Encode::encode(char *infile, char *outfile)
 
 void Encode::encode_symbol(int symbol)
 {
-	int range;
+	long range;
 
-	range = high - low;
-	high = low + (range * cum_freq [symbol - 1]) / cum_freq [0];
+	range = high - low + 1;
+	high = low + (range * cum_freq [symbol - 1]) / cum_freq [0] - 1;
 	low = low + (range * cum_freq [symbol]) / cum_freq [0];
 	for (;;)
 	{
@@ -70,7 +70,7 @@ void Encode::encode_symbol(int symbol)
 	else
 		break;
 	low = 2 * low;
-	high = 2 * high;
+	high = 2 * high + 1;
 	}
 }
 
@@ -82,7 +82,10 @@ void Encode::end_encoding(void)
   else
     output_bits(1);
 
-  out.put(buffer >> bits_in_buf);
+  /* The decoder reads each byte from its least-significant bit (buffer & 1),
+     so the pending bits must be shifted down before writing. */
+  if (bits_in_buf > 0)
+    out.put(buffer >> (8 - bits_in_buf));
 }
 
 void Encode::output_bits(int bit)

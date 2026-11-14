@@ -3,12 +3,12 @@
 
 class Decode : public Compress
 {
-	int low, high;
-	int value;
+	long low, high;
+	long value;
 
 	int buffer;
 	int	bits_in_buf;
-	bool end_decoding;
+	int eof_reads;
 
 	ifstream in;
 	ofstream out;
